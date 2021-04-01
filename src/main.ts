@@ -8,18 +8,18 @@ const lowestBasePrice = (cart: Cart) =>
   basePrices
     .filter(
       (price) =>
-        cart &&
         price.productType === cart.productType &&
         Object.keys(cart.options)
-          .map(
-            (cartOptionKey) =>
-              price.options[cartOptionKey] &&
-              //@ts-ignore
-              price.options[cartOptionKey].includes(
-                //@ts-ignore
-                cart.options[cartOptionKey] || "Not"
-              )
+          .map((cartOptionKey) =>
+            // If the option key exists in both price and cart, check if they match.
+            // Otherwise just return true (skipping check).
+            price.options[cartOptionKey] && cart.options[cartOptionKey]
+              ? (price.options[cartOptionKey] || []).includes(
+                  cart.options[cartOptionKey] || "Not Found"
+                )
+              : true
           )
+          // Check if all of the check passes.
           .reduce((acc, curr) => acc && curr)
     )
     .sort((basePriceOne, basePriceTwo) =>
@@ -29,8 +29,7 @@ const lowestBasePrice = (cart: Cart) =>
 const total9363 = cart9363
   .map((cart) => {
     const basePriceObject = lowestBasePrice(cart);
-    console.log(JSON.stringify(cart));
-    console.log(JSON.stringify(basePriceObject));
+
     const currBestPrice = basePriceObject
       ? basePriceObject.basePrice
       : undefined;
@@ -44,6 +43,7 @@ const total9363 = cart9363
     console.log(total);
     return total;
   })
+  // Add all the prices together.
   .reduce((acc, curr) => acc + curr, 0);
 
-console.log(`\nThe chosen ones are: ${JSON.stringify(total9363)}`);
+console.log(`\nThe total price is: ${JSON.stringify(total9363)}`);

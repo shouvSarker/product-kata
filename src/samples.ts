@@ -6,7 +6,7 @@ export const cart9363: Cart[] = [
     options: {
       size: "small",
       colour: "dark",
-      //"print-location": "front"
+      printLocation: "front",
     },
     artistMarkup: 20,
     quantity: 2,
