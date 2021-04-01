@@ -1,5 +1,7 @@
 import { BasePrice, Cart } from "./types";
-import { BasePrices, Cart4560, Cart9363, Cart9500, Cart11356 } from "./samples";
+import { convertedJsonInput } from "./utilities/readInputs";
+
+const incomingArguments = convertedJsonInput(process.argv.slice(2));
 
 const optionCheck = (price: BasePrice, cart: Cart) =>
   Object.keys(cart.options)
@@ -28,32 +30,37 @@ const lowestBasePrice = (cart: Cart, basePrices: BasePrice[]) =>
     )
   );
 
-const showTotalPrices = (cart9363: Cart[], basePrices: BasePrice[]) => {
-  const total9363 = cart9363
-    .map((cart) => {
-      const basePriceObject = lowestBasePrice(cart, basePrices);
+const getTotalPrices = (cart9363: Cart[], basePrices: BasePrice[]) => {
+  return (
+    cart9363
+      .map((cart) => {
+        const basePriceObject = lowestBasePrice(cart, basePrices);
 
-      const currBestPriceAmount = basePriceObject
-        ? basePriceObject.basePrice
-        : undefined;
+        const currBestPriceAmount = basePriceObject
+          ? basePriceObject.basePrice
+          : undefined;
 
-      return currBestPriceAmount
-        ? (currBestPriceAmount +
-            Math.round((currBestPriceAmount * cart.artistMarkup) / 100)) *
-            cart.quantity
-        : 0;
-    })
-    // Add all the prices together.
-    .reduce((acc, curr) => acc + curr, 0);
-
-  console.log(
-    `The total price is for cart ${JSON.stringify(
-      cart9363
-    )} is: ${JSON.stringify(total9363)}\n`
+        return currBestPriceAmount
+          ? (currBestPriceAmount +
+              Math.round((currBestPriceAmount * cart.artistMarkup) / 100)) *
+              cart.quantity
+          : 0;
+      })
+      // Add all the prices together.
+      .reduce((acc, curr) => acc + curr, 0)
   );
 };
 
-showTotalPrices(Cart4560, BasePrices);
-showTotalPrices(Cart9363, BasePrices);
-showTotalPrices(Cart9500, BasePrices);
-showTotalPrices(Cart11356, BasePrices);
+const showTotalPrices = (incomingArguments: any) =>
+  console.log(
+    `Total price for cart ${
+      incomingArguments.convertedCart.path
+    } and base price ${
+      incomingArguments.convertedBasePrice.path
+    } is: ${getTotalPrices(
+      incomingArguments.convertedCart.items,
+      incomingArguments.convertedBasePrice.items
+    )}`
+  );
+
+showTotalPrices(incomingArguments);
