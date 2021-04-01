@@ -1,0 +1,14 @@
+{
+  "name": "product-kata",
+  "version": "1.0.0",
+  "description": "Solves a product kata.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-main": "ts-node src/main.ts"
+  },
+  "author": "Shouv",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
+}
