@@ -1,6 +1,19 @@
 import { Cart, BasePrice } from "./types";
 
-export const cart9363: Cart[] = [
+export const Cart4560: Cart[] = [
+  {
+    productType: "hoodie",
+    options: {
+      size: "small",
+      colour: "white",
+      printLocation: "front",
+    },
+    artistMarkup: 20,
+    quantity: 1,
+  },
+];
+
+export const Cart9363: Cart[] = [
   {
     productType: "hoodie",
     options: {
@@ -21,7 +34,43 @@ export const cart9363: Cart[] = [
   },
 ];
 
-export const basePrices: BasePrice[] = [
+export const Cart9500: Cart[] = [
+  {
+    productType: "hoodie",
+    options: {
+      size: "small",
+      colour: "white",
+      printLocation: "front",
+    },
+    artistMarkup: 20,
+    quantity: 1,
+  },
+  {
+    productType: "hoodie",
+    options: {
+      size: "small",
+      colour: "dark",
+      printLocation: "front",
+    },
+    artistMarkup: 30,
+    quantity: 1,
+  },
+];
+
+export const Cart11356: Cart[] = [
+  {
+    productType: "hoodie",
+    options: {
+      size: "xl",
+      colour: "dark",
+      printLocation: "back",
+    },
+    artistMarkup: 30,
+    quantity: 2,
+  },
+];
+
+export const BasePrices: BasePrice[] = [
   {
     productType: "hoodie",
     options: {
