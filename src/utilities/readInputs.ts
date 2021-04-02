@@ -1,4 +1,5 @@
 import { readFileSync } from "fs";
+import { join } from "path";
 
 const toCamel = (s: string) => {
   return s.replace(/([-_][a-z])/gi, ($1) => {
@@ -36,8 +37,12 @@ export const convertedJsonInput = (files: string[]) => {
   // first two arguments are ts-node and the source file
   // hence read the next two, which should be cartFile and basePriceFile
   const inputFiles = {
-    cartFile: files[0] || "./src/test/resources/examples/cart-4560.json",
-    basePriceFile: files[1] || "./src/test/resources/examples/base-prices.json",
+    cartFile:
+      files[0] ||
+      join(__dirname, "../test/resources/examples/carts/cart-4560.json"),
+    basePriceFile:
+      files[1] ||
+      join(__dirname, "../test/resources/examples/basePrices/base-prices.json"),
   };
 
   const cart: string = readFileSync(inputFiles.cartFile, "utf8");
@@ -51,7 +56,7 @@ export const convertedJsonInput = (files: string[]) => {
     ),
     convertedBasePrice: Object.assign(
       { items: keysToCamel(JSON.parse(basePrice)) },
-      { path: inputFiles.cartFile }
+      { path: inputFiles.basePriceFile }
     ),
   };
 };
