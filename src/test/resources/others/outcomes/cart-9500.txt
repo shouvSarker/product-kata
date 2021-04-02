@@ -1,0 +1,1 @@
+Total price for cart /home/shouv/kataWorkspace/productKata/src/test/resources/examples/carts/cart-9500.json and base price /home/shouv/kataWorkspace/productKata/src/test/resources/others/basePrices/base-prices-big.json is: 9500
