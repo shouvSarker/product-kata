@@ -10,10 +10,20 @@ import {
 
 const appFunctions = rewire("../../showTotalPrice.ts");
 
+/**
+ * Tests whether show total price is logging output accurately.
+ *
+ * @param inputArguments Input file paths and data.
+ * @param expectedOutcome The log message we expect to be displayed.
+ * @returns Boolean denoting if the test passed.
+ */
 export const testShowTotalPrice = (
   inputArguments: ConvertedJsonInput,
   expectedOutcome: string
 ) => {
+  // Storing the console log strings to an array.
+  // This will assist us with comparing the logged messages
+  // with expected logging.
   var logBackup = console.log;
   var logMessages: any = [];
 
@@ -24,9 +34,13 @@ export const testShowTotalPrice = (
   };
 
   const showTotalPrice = appFunctions.__get__("showTotalPrice");
+
+  // evaluating the function so that we can mock the functions called from it.
+  // Rewire cannot mock a const function.
+  // Avoided using other mock packages to keep this lightweight.
   const evaledShowTotalPrice = eval(showTotalPrice.toString());
 
-  // Overrides total price function call
+  // Mocks getTotalPrice by setting the function here.
   // @ts-ignore
   const getTotalPrice = () => 100;
 
@@ -36,6 +50,7 @@ export const testShowTotalPrice = (
   const failOutcome = `${logMessages[0]}` === "";
   const successOutcome = `${logMessages[0]}` === expectedOutcome;
 
+  // Test a fail case just to be sure test passing is legitimate.
   failOutcome
     ? console.error("Test is passing anyway, fail case not satisfied.")
     : console.log("Successfully asserted fail case. No boogy tests passing.");
@@ -47,6 +62,14 @@ export const testShowTotalPrice = (
   return !failOutcome && successOutcome;
 };
 
+/**
+ * Tests get total price for a list of carts.
+ *
+ * @param inputCarts The Carts to get total prices of.
+ * @param inputBasePrices The supplied base prices.
+ * @param expectedOutcome The total price we expect.
+ * @returns Boolean denoting if the test passed.
+ */
 export const testGetTotalPrice = (
   inputCarts: Cart[],
   inputBasePrices: BasePrice[],
@@ -58,12 +81,12 @@ export const testGetTotalPrice = (
   // @ts-ignore
   const lowestBasePrice = () => ({
     productType: "testProduct",
-    options: [],
+    options: {},
     basePrice: 20,
   });
 
   const outcome = evaledGetTotalPrice(inputCarts, inputBasePrices);
-  const failOutcome = outcome === 0;
+  const failOutcome = outcome === expectedOutcome * 4; // Generating a failed case.
   const successOutcome = outcome === expectedOutcome;
 
   failOutcome
@@ -77,6 +100,13 @@ export const testGetTotalPrice = (
   return !failOutcome && successOutcome;
 };
 
+/**
+ * Tests getting lowest base price for a cart.
+ *
+ * @param inputCarts The carts to get bas price for.
+ * @param inputBasePrices The supplied base price.
+ * @returns Boolean denoting if the test passed.
+ */
 export const testLowestBasePrice = (
   inputCarts: Cart,
   inputBasePrices: BasePrice[]
@@ -84,10 +114,12 @@ export const testLowestBasePrice = (
   const lowestBasePrice = appFunctions.__get__("lowestBasePrice");
   const evaledLowestBasePrice = eval(lowestBasePrice.toString());
 
+  // Mocks the other functions called in this function.
   // @ts-ignore
-  const getLowestBasePrice = (arg) => arg;
+  const getLowestBasePrice = (arg) => arg; // Return supplied argument.
   // @ts-ignore
   const optionCheck = () => true;
+
   const outcome = evaledLowestBasePrice(inputCarts, inputBasePrices);
   const failOutcome = JSON.stringify(outcome) === "";
   const successOutcome =
@@ -104,6 +136,12 @@ export const testLowestBasePrice = (
   return !failOutcome && successOutcome;
 };
 
+/**
+ * Tests getting lowest base price from a list of base prices.
+ *
+ * @param inputBasePrices The supplied list of base prices.
+ * @returns Boolean denoting if the test passed.
+ */
 export const testGetLowestBasePrice = (inputBasePrices: BasePrice[]) => {
   const getLowestBasePrice = appFunctions.__get__("getLowestBasePrice");
 
@@ -123,6 +161,14 @@ export const testGetLowestBasePrice = (inputBasePrices: BasePrice[]) => {
   return !failOutcome && successOutcome;
 };
 
+/**
+ * Tests if option check is returning the correct value.
+ *
+ * @param inputCartOptions The available cart options.
+ * @param inputBasePriceOptions The available base price options.
+ * @param expectedOutcome The boolean we expect from our options check.
+ * @returns Boolean denoting if the test passed.
+ */
 export const testOptionCheck = (
   inputCartOptions: CartOptions,
   inputBasePriceOptions: BasePriceOptions,

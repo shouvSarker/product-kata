@@ -8,5 +8,5 @@ const incomingArguments: ConvertedJsonInput = convertedJsonInput(
   process.argv.slice(2)
 );
 
-// Call main function to show total prices.
+// Call the function to show total price.
 showTotalPrice(incomingArguments);

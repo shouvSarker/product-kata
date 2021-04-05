@@ -5,8 +5,11 @@ import {
   throwTestFailure,
 } from "./utilities/e2e";
 
+// Dynamically creates a big base price.
+// Not specifying the location here will write to the default path.
 createDynamicBigBasePrice();
 
+// Specify fixture for e2e tests.
 const preconfiguredBigBaseFileWithPath = join(
   __dirname,
   "resources/others/basePrices/base-prices-big.json"
@@ -52,6 +55,8 @@ const timeTakenByDynamicOutcome = dynamicBigBaseOutcome.topOutcome
   ? dynamicBigBaseOutcome.topOutcome.timeTaken
   : throwTestFailure("Failed to get time taken by dynamic outcome.");
 
+// If time difference between big and small files are greater than 0.5 seconds,
+// then make the test fail with an error message as time complexity diff is too high.
 const timeDiffPreconfig =
   timeTakenByPreconfiguredOutcome - timeTakeyByExampleOutcome > 0.5
     ? {
@@ -86,9 +91,10 @@ timeDiffDynamic.failed
   ? console.error(timeDiffDynamic.message)
   : console.log(timeDiffDynamic.message);
 
+// Check if all tests have passed including time complexity ones.
 exampleBasePriceOutcome.result &&
 preConfiguredBigBaseOutcome.result &&
 dynamicBigBaseOutcome.result &&
-(timeDiffPreconfig || timeDiffDynamic.failed)
+(timeDiffPreconfig.failed || timeDiffDynamic.failed)
   ? console.log("All tests have passed!")
   : throwTestFailure("Some tests have failed! Check error logs for details.");

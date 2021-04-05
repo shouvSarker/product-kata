@@ -3,8 +3,15 @@ import { readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { convertedJsonInput } from "../../utilities/readInputs";
 
+// Path to test resources from here.
 const localPathToTest: string = "../resources/examples/carts";
 
+/**
+ * Calculated the amount of time taken to load (and process) a file.
+ *
+ * @param inputFilePath The input file for which load time is calculated.
+ * @returns Time taken to process input file.
+ */
 const calculateLoadTime = (inputFilePath: string) => {
   const dynamicBigLoadStart = Date.now();
 
@@ -13,6 +20,11 @@ const calculateLoadTime = (inputFilePath: string) => {
   return (Date.now() - dynamicBigLoadStart) / 1000;
 };
 
+/**
+ * Dynamically create a big base prices file. This will be used later to compare time complexity.
+ *
+ * @param location Location to store the big dynamic file.
+ */
 export const createDynamicBigBasePrice = (
   location: string = "../resources/others/basePrices/base-prices-big-dynamic.json"
 ) => {
@@ -29,6 +41,7 @@ export const createDynamicBigBasePrice = (
     return stringArrayByLength(20);
   });
 
+  // Merges two objects into one.
   const zipObj = (xs: any) => (ys: any) =>
     xs.reduce((obj: any, x: any, i: any) => ({ ...obj, [x]: ys[i] }), {});
 
@@ -50,6 +63,14 @@ export const createDynamicBigBasePrice = (
   );
 };
 
+/**
+ * Gets the test outcomes alongside time taken to execute script.
+ *
+ * @param basePriceFileWithPath The path to base price.
+ * @param localOutcomePath The path to the test outcome file.
+ * @param fileProcessingTime Total processing time for input file.
+ * @returns the test outcome (true | false), and time taken to execute script.
+ */
 const testOutcomes = (
   basePriceFileWithPath: string,
   localOutcomePath: string,
@@ -80,10 +101,24 @@ const testOutcomes = (
     return { outcome, timeTaken };
   });
 
+/**
+ * Throws an error message. Extracted to a function for use in ternary operations.
+ *
+ * @param errorMessage The error to throw.
+ */
 export const throwTestFailure = (errorMessage: string) => {
   throw errorMessage;
 };
 
+/**
+ * Runs a test with provided base price file path.
+ *
+ * @param basePriceFileWithPath The path to the base file.
+ * @param localOutcomePath The path to the outcome file.
+ * @param desc Sort order for time complexity.
+ * @returns Result of the test (true | false) and highest/lowest
+ *          (depending on desc) amount of time taken to execute script.
+ */
 export const runTest = (
   basePriceFileWithPath: string,
   localOutcomePath: string,

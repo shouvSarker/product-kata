@@ -6,6 +6,9 @@ import {
   testOptionCheck,
 } from "./utilities/unitTests";
 
+import { throwTestFailure } from "./utilities/e2e";
+
+// Specify fixture for unit tests.
 const inputShowTotalPriceArguments = {
   convertedCart: {
     path: "testCartPath",
@@ -78,6 +81,7 @@ const inputOptionCheckBasePriceOptions = {
   size: ["small", "medium"],
 };
 
+// Run and store all test outcomes.
 const testResults = [
   testShowTotalPrice(
     inputShowTotalPriceArguments,
@@ -100,6 +104,7 @@ const testResults = [
   ),
 ];
 
+// Check if all tests passed.
 testResults.reduce((acc, curr) => acc && curr)
   ? console.log("All tests have passed!")
-  : console.log("There are test failures. Check logs for details");
+  : throwTestFailure("There are test failures. Check logs for details");
