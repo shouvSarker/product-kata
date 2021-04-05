@@ -9,7 +9,7 @@ yarn install
 yarn run-main path/to/carts path/to/basePrices (it uses example base price and cart 4560 if arguments not supplied)
 ```
 
-To run tests:
+Tests have been hand-crafted instead of using a framework. To run tests:
 
 ```
 yarn e2e-test
