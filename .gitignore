@@ -1,2 +1,3 @@
 node_modules
 .build
+src/test/resources/others/basePrices/base-prices-big-dynamic.json
