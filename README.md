@@ -1,4 +1,5 @@
-## Solution file for [Product Kata](http://take-home-test.herokuapp.com/new-product-engineer)
+## Kata
+Calculates total price of a cart from a schema of base prices.
 
 ## Pre-requisites
 
